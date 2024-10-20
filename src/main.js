@@ -9,10 +9,6 @@ const messaging = new MigrateMessage(mqttUrl, server);
 
 messaging.send('test');
 
-app.get('/', (req, res) => {
-    res.status(200).send('Heeloo')
-});
-
-app.listen(8080, () => {
-    console.log(`server listen on port 8080`);
+server.listen(8800, 'localhost', () => {
+    console.log('Websocket Server listen on port 8800')
 })

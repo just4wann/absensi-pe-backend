@@ -5,10 +5,14 @@ export class GatewayConnection {
     constructor() {}
 
     createSocketConnection(server) {
-        const socket = new Server(server);
+        const socket = new Server(server, {
+            cors: {
+                origin: ["http://localhost:5173"]
+            }
+        });
         socket.on('connection', () => {
             console.log('Client Connected to Socket')
-        })
+        });
         return socket;
     }
 
@@ -21,7 +25,7 @@ export class GatewayConnection {
     }
 
     emitPayload(socket, payload) {
-        return socket.emit(payload.message, payload.topic);
+        return socket.emit(payload.topic, payload.message);
     }
 
     subscribeTopic(client, topic) {
@@ -31,15 +35,4 @@ export class GatewayConnection {
             }
         })
     }
-
-    getData(client) {
-        let payload = {};
-        client.on('message', (topic, msg) => {
-            payload.topic = topic;
-            payload.message = msg.toString();
-            console.log(payload);
-        })
-        return payload;
-    }
-
 }

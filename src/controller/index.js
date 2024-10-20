@@ -13,8 +13,11 @@ export class MigrateMessage {
         const client = gateway.createMqttConnection(this.url);
 
         gateway.subscribeTopic(client, topic);
-        const payload = gateway.getData(client);
-        console.log(payload);
-        gateway.emitPayload(socket, payload);
+        client.on('message', (topic, msg) => {
+            gateway.emitPayload(socket, {
+                topic: topic,
+                message: msg.toString()
+            });
+        })
     }
 }
